@@ -10,15 +10,20 @@ router.post('/',(req,res)=>{
         console.log(error)
     }
 })
-router.post('/api/login',async(req,res)=>{
-    try {
+router.post('/login',async(req,res)=>{
         const user = await userModel.findOne({ email: req.body.email });
         if (!user) {
-          console.log("error")
+          return res.send("error")
         }  
-    } catch (error) {
-        console.log(error)
-    }
+        try {
+            if (user.password === req.body.password) {
+                res.send("login successful")
+            } else {
+                res.send("invalid crendentials")
+            }
+        } catch (error) {
+            res.send(error)
+        }
 })
 
 module.exports = router
